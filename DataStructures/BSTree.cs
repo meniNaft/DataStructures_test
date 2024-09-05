@@ -1,5 +1,4 @@
 ﻿using DataStructures_test.Constants;
-using DataStructures_test.Model;
 
 namespace DataStructures_test.DataStructures
 {
@@ -36,7 +35,6 @@ namespace DataStructures_test.DataStructures
             return currentNode;
         }
 
-        //public static void Remove(T value) { }
         public IEnumerable<T> PreOrder => GetPreOrderRecursion(root);
 
         private static IEnumerable<T> GetPreOrderRecursion(Node? node)
@@ -112,16 +110,18 @@ namespace DataStructures_test.DataStructures
             root = GetBalanceNode(inOrderList);
             Console.WriteLine();
         }
-        private Node? GetBalanceNode(T[] inOrderList)
+        private static Node? GetBalanceNode(T[] inOrderList)
         {
-            if(!inOrderList.Any()) return null;
+            if(inOrderList.Length == 0) return null;
             int middleIndex = (inOrderList.Length - 1) / 2;
             T middle = inOrderList[middleIndex];
             T[] leftPart = inOrderList.Take(middleIndex).ToArray();
             T[] rightPart = inOrderList.Skip(middleIndex + 1).ToArray();
-            Node newNode = new Node(middle);
-            newNode.Left = GetBalanceNode(leftPart);
-            newNode.Right = GetBalanceNode(rightPart);
+            Node newNode = new(middle)
+            {
+                Left = BSTree<T>.GetBalanceNode(leftPart),
+                Right = BSTree<T>.GetBalanceNode(rightPart)
+            };
             return newNode;
         }
     }
